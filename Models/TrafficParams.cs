@@ -6,9 +6,9 @@ namespace StaffTraffic.Models
     {
         public Guid UserId { get; set; }
 
-        public DateTime OutDate { get; set; }
+        public string OutDate { get; set; }
 
-        public DateTime InDate { get; set; }
+        public string InDate { get; set; }
 
         [MaxLength(250)]
         public string? Description { get; set; }

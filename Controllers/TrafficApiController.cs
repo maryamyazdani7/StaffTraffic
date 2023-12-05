@@ -7,6 +7,7 @@ using StaffTraffic.Areas.Identity.Data;
 using StaffTraffic.DataAccess;
 using StaffTraffic.Models;
 using StaffTraffic.Models.Entities;
+using System.Globalization;
 
 namespace StaffTraffic.Controllers
 {
@@ -27,28 +28,21 @@ namespace StaffTraffic.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(TrafficParams traffic)
         {
-            var inTraffic = await _trafficService.Create(new Traffic
+            var pc = new PersianCalendar();
+            var inDate = DateTime.Parse(traffic.InDate, new CultureInfo("fa-IR")); ;
+            var outDate = DateTime.Parse(traffic.OutDate, new CultureInfo("fa-IR"));
+            var resultId = await _trafficService.Create(new Traffic
             {
             
                 UserId = traffic.UserId,
                 CreatedOn = DateTime.Now,
-                RegDate = traffic.InDate,
-                IsInDate = true,
-                Description = traffic.Description
-            
-            });
-            var outTraffic = await _trafficService.Create(new Traffic
-            {
-            
-                UserId = traffic.UserId,
-                CreatedOn = DateTime.Now,
-                RegDate = traffic.OutDate,
-                IsInDate = false,
+                InDate = inDate,
+                OutDate = outDate,
                 Description = traffic.Description
             
             });
 
-            return outTraffic != default && inTraffic != default ? Ok() : BadRequest();
+            return resultId != default ? Ok(resultId): BadRequest();
 
         }
 
@@ -61,11 +55,20 @@ namespace StaffTraffic.Controllers
             return traffics;
 
         }
+
         [HttpGet, Route("{id}")]
         public async Task<Traffic?> GetById(Guid id)
         {
             var traffic = await _trafficService.GetById(id);
             return traffic;
+
+        }
+
+        [HttpDelete, Route("{id}")]
+        public async Task<bool> Delete(Guid id)
+        {
+            var result = await _trafficService.Delete(id);
+            return result;
 
         }
     }

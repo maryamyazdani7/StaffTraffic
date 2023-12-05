@@ -34,25 +34,20 @@ namespace StaffTraffic.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            //var t = await _trafficService.Create(new Traffic
-            //{
-            //    UserId = new Guid(userId),
-            //    CreatedOn = DateTime.Now,
-            //    RegDate = DateTime.Now.AddDays(-1),
-            //    IsInDate = true,
-            //    Description = "test"
-            //});
-            //var t2 = await _trafficService.Create(new Traffic
-            //{
-            //    UserId = new Guid(userId),
-            //    CreatedOn = DateTime.Now,
-            //    RegDate = DateTime.Now.AddDays(-1),
-            //    IsInDate = false,
-            //    Description = "test2"
-            //}
-            //);
-            var users = _userService.Get().GetAwaiter().GetResult();
-            var traffics = _trafficService.Get(userId: (userId != null ? new Guid(userId) : null)).GetAwaiter().GetResult();
+            var users =  new List<ApplicationUser>();
+            if (User.IsInRole("Admin"))
+            {
+                users = await _userService.Get();
+            }
+            else
+            {
+                var currentUser = await _userService.GetById(new Guid(userId));
+                if (currentUser != null)
+                {
+                    users.Add(currentUser);
+                }
+            }
+            var traffics = await _trafficService.Get(userId: (userId != null && User.IsInRole("User") ? new Guid(userId) : null));
             var pageModel = new TrafficPageViewModel
             {
                 Traffics = traffics,

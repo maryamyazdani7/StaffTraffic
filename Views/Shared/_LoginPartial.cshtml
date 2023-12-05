@@ -7,36 +7,7 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    @* <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">StaffTraffic</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
-                </ul>
-            </div>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-                </li>
-                <li class="nav-item">
-                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
-    </nav>*@
-    <header class="navbar-header" id="header">
+      <header class="navbar-header" id="header">
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
         <div class="header_img"> درود @UserManager.GetUserName(User)!</div>
     </header>
@@ -61,17 +32,6 @@
             <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button id="logout" type="submit" class="nav-link btn btn-link nav_btn_link"><i class='bx bx-log-out nav_icon'></i> <span class="nav_name">خروج</span> </button>
             </form>
-            @*<a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">خروج</span> </a>*@
         </nav>
     </div>
 }
-@*else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
-*@

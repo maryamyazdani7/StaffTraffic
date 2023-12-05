@@ -1,8 +1,13 @@
 ﻿@using StaffTraffic.Models;
+@using System.Globalization;
 @model TrafficPageViewModel
-
-<div class="container">
-
+@{
+    var calendar = new PersianCalendar();
+}
+<div class="container m-5">
+    <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#insert-traffic">
+        درج تردد جدید
+    </button>
     <table id="traffic-table" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -36,14 +41,13 @@
 
             @foreach (var record in Model.Traffics)
             {
-
-                <tr data-id="@record.Id">
+                    <tr data-id="@record.Id">
                     <td>@record.User.FirstName @record.User.LastName</td>
                     <td>@record.User.UserName</td>
                     <td>@record.CreatedOn</td>
-                    <td>@(record.IsInDate ? record.RegDate : "-")</td>
-                    <td>@(!record.IsInDate ? record.RegDate : "-")</td>
-                    <td>@record.Description</td>
+                    <td>@record.InDatePersian</td>
+                    <td>@record.OutDatePersian</td>
+                    <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">@record.Description</td>
                 </tr>
             }
         </tbody>
@@ -57,54 +61,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-2">
-                        <label for="user-select" class="form-label">کاربر</label>
-                       
-                    </div>
-                    <div class="mb-2">
-                        <label for="enter-date" class="form-label">زمان ورود</label>
-                        <div class="input-group" dir="ltr">
-                            <a class="calender-btn input-group-text"><i class="fa fa-calendar"></i></a>
-                            <input id="enter-date" class="form-control persian-calendar required date-mask" placeholder="زمان ورود">
-                            <a class="input-group-text text-decoration-none" onclick="$('#enter-date').val('')"><i class="fa fa-close text-danger"></i></a>
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="out-date" class="form-label">زمان خروج</label>
-                        <div class="input-group" dir="ltr">
-                            <a class="calender-btn input-group-text"><i class="fa fa-calendar"></i></a>
-                            <input id="out-date" class="form-control required persian-calendar date-mask" placeholder="زمان خروج">
-                            <a class="input-group-text text-decoration-none" onclick="$('#out-date').val('')"><i class="fa fa-close text-danger"></i></a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="traffic-detail" data-id="" tabindex="-1" role="dialog" data-bs-backdrop="static" aria-labelledby="traffic-detailLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">درج تردد</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close modal-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <div>
                     <div class="mb-2">
                         <label for="user-select" class="form-label">کاربر</label>
                         <select class="form-select required" id="user-select">
@@ -120,23 +83,66 @@
                     <div class="mb-2">
                         <label for="enter-date" class="form-label">زمان ورود</label>
                         <div class="input-group" dir="ltr">
-                            <a class="calender-btn input-group-text"><i class="fa fa-calendar"></i></a>
+                            <a class="calender-btn input-group-text"><i class="bx bx-calendar"></i></a>
                             <input id="enter-date" class="form-control persian-calendar required date-mask" placeholder="زمان ورود">
-                            <a class="input-group-text text-decoration-none" onclick="$('#enter-date').val('')"><i class="fa fa-close text-danger"></i></a>
+                            <a class="input-group-text text-decoration-none" onclick="$('#enter-date').val('')"><i class="bx bx-x text-danger"></i></a>
                         </div>
                     </div>
                     <div class="mb-2">
                         <label for="out-date" class="form-label">زمان خروج</label>
                         <div class="input-group" dir="ltr">
-                            <a class="calender-btn input-group-text"><i class="fa fa-calendar"></i></a>
+                            <a class="calender-btn input-group-text"><i class="bx bx-calendar"></i></a>
                             <input id="out-date" class="form-control required persian-calendar date-mask" placeholder="زمان خروج">
-                            <a class="input-group-text text-decoration-none" onclick="$('#out-date').val('')"><i class="fa fa-close text-danger"></i></a>
+                            <a class="input-group-text text-decoration-none" onclick="$('#out-date').val('')"><i class="bx bx-x text-danger"></i></a>
                         </div>
-                </form>
+                    </div>
+                    <div class="mb-2">
+                        <label for="description" class="form-label">توضیحات</label>
+                        <div>
+                        <textarea id="description" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
-                <button type="button" class="btn btn-primary" onclick="InsertTraffic()">تایید</button>
+                <button type="button" class="btn btn-primary" onclick="InsertTraffic()">ذخیره  <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="traffic-detail" data-id="" tabindex="-1" role="dialog" data-bs-backdrop="static" aria-labelledby="traffic-detailLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">جزئیات</h5>
+                <button type="button" class="close modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="mb-2">
+                        <label for="user-select" class="form-label">کاربر</label>
+                        <p class="form-control" id="traffic-detail-user"></p>
+                    </div>
+                    <div class="mb-2">
+                        <label for="enter-date" class="form-label">زمان ورود</label>
+                        <p class="form-control" id="traffic-detail-indate"></p>
+                    </div>
+                    <div class="mb-2">
+                        <label for="out-date" class="form-label">زمان خروج</label>
+                        <p class="form-control" id="traffic-detail-outdate"></p>
+                    </div>
+                    <div class="mb-2">
+                        <label for="out-date" class="form-label">توضیحات</label>
+                        <p class="form-control" id="traffic-detail-description"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="DeleteTraffic($('#traffic-detail').attr('data-id'))">حذف  <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span></button>
             </div>
         </div>
     </div>

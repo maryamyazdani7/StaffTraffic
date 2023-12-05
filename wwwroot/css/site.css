@@ -260,3 +260,25 @@ a {
 .table td{
     cursor: pointer;
 }
+
+.modal-close {
+    border: 0;
+    background: none;
+    font-size: 27px;
+}
+
+@keyframes spinner-border {
+    to {
+        transform: rotate(360deg)
+    }
+}
+@keyframes spinner-grow {
+    0% {
+        transform: scale(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: none;
+    }
+}
