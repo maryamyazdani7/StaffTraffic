@@ -77,7 +77,7 @@ namespace StaffTraffic.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "ایمیل")]
             public string Email { get; set; }
 
             /// <summary>
@@ -87,7 +87,7 @@ namespace StaffTraffic.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "کلمه عبور")]
             public string Password { get; set; }
 
             /// <summary>
@@ -95,22 +95,22 @@ namespace StaffTraffic.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = "تکرار کلمه عبور")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "FirstName")]
+            [Display(Name = "نام")]
             public string FirstName { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "LastName")]
+            [Display(Name = "نام خانوادگی")]
             public string LastName { get; set; }
 
             [Required]
-            [Display(Name = "PersonnelCode")]
+            [Display(Name = "کد پرسنلی")]
             [StringLength(6)]
             [MinLength(6)]
             public string PersonnelCode { get; set; }
@@ -136,7 +136,7 @@ namespace StaffTraffic.Areas.Identity.Pages.Account
                 user.Email = Input.Email;
                 user.IsEnable = true;
                 await _userStore.SetUserNameAsync(user, Input.PersonnelCode.ToString(), CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+               // await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

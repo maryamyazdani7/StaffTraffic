@@ -47,6 +47,7 @@ namespace StaffTraffic.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [EmailAddress]
+            [Display(Name = "ایمیل")]
             public string Email { get; set; }
         }
 

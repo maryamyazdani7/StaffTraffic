@@ -64,7 +64,7 @@ namespace StaffTraffic.Areas.Identity.Pages.Account
 
 
             [Required]
-            [Display(Name = "PersonnelCode")]
+            [Display(Name = "کد پرسنلی")]
             [StringLength(6)]
             [MinLength(6)]
             public string PersonnelCode { get; set; }
@@ -83,13 +83,14 @@ namespace StaffTraffic.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "کلمه عیور")]
             public string Password { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Display(Name = "Remember me?")]
+            [Display(Name = "مرا به خاطر بسپار")]
             public bool RememberMe { get; set; }
         }
 
@@ -137,7 +138,7 @@ namespace StaffTraffic.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "اطلاعات کاربری نامعتبر");
                     return Page();
                 }
             }

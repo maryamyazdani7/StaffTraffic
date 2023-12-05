@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StaffTraffic.Areas.Identity.Data;
 using StaffTraffic.DataAccess;
+using StaffTraffic.Models;
 using StaffTraffic.Models.Entities;
 
 namespace StaffTraffic.Controllers
@@ -23,10 +25,30 @@ namespace StaffTraffic.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Traffic traffic)
+        public async Task<IActionResult> Create(TrafficParams traffic)
         {
-            var t = await _trafficService.Create(traffic);
-            return t != default ? Ok(t) : BadRequest();
+            var inTraffic = await _trafficService.Create(new Traffic
+            {
+            
+                UserId = traffic.UserId,
+                CreatedOn = DateTime.Now,
+                RegDate = traffic.InDate,
+                IsInDate = true,
+                Description = traffic.Description
+            
+            });
+            var outTraffic = await _trafficService.Create(new Traffic
+            {
+            
+                UserId = traffic.UserId,
+                CreatedOn = DateTime.Now,
+                RegDate = traffic.OutDate,
+                IsInDate = false,
+                Description = traffic.Description
+            
+            });
+
+            return outTraffic != default && inTraffic != default ? Ok() : BadRequest();
 
         }
 
